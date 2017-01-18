@@ -1,0 +1,134 @@
+dnl Process this file with autoconf to produce a configure script.
+AC_INIT(src/main.c)
+
+PACKAGE=gnuitar
+
+dnl version number
+MAJOR_VERSION=0
+MINOR_VERSION=3
+MICRO_VERSION=2
+dnl INTERFACE_AGE=1
+dnl BINARY_AGE=1
+EXTRA_VERSION=
+VERSION=$MAJOR_VERSION.$MINOR_VERSION.$MICRO_VERSION$EXTRA_VERSION
+
+AM_INIT_AUTOMAKE($PACKAGE,$VERSION,no-define)
+AC_DEFINE_UNQUOTED(PACKAGE, "$PACKAGE")
+AC_DEFINE_UNQUOTED(VERSION, "$VERSION")
+
+dnl Specify a header configuration file
+dnl AM_CONFIG_HEADER(config.h)
+
+dnl Checks for programs.
+AC_ARG_PROGRAM
+AC_PROG_AWK
+AC_PROG_LN_S
+AC_PROG_CC
+AC_PROG_INSTALL
+
+AC_ARG_WITH(gtk2,
+    [  --with-gtk2	          Use GTK2 instead GTK (disabled by default)],
+    [
+	if test "$withval" != "no"; then
+	    AM_PATH_GLIB_2_0(2.2.0,
+		[
+		    CONFIG_DEFS="$CONFIG_DEFS -DHAVE_GLIB2"
+		],
+		AC_MSG_ERROR(Test for GLIB2 failed. See the file 'INSTALL' for help.),
+		gthread)
+	    AM_PATH_GTK_2_0(2.0.0,
+		[
+		    CONFIG_DEFS="$CONFIG_DEFS -DHAVE_GTK2"
+		],
+		AC_MSG_ERROR(Test for GTK2 failed. See the file 'INSTALL' for help.))
+	else
+	    AM_PATH_GLIB(1.2.6,
+		[
+		    CONFIG_DEFS="$CONFIG_DEFS -DHAVE_GLIB"
+		],
+		AC_MSG_ERROR(Test for GLIB failed. See the file 'INSTALL' for help.),
+		gthread)
+	    AM_PATH_GTK(1.2.6,
+		[
+		    CONFIG_DEFS="$CONFIG_DEFS -DHAVE_GTK"
+		],
+		AC_MSG_ERROR(Test for GTK failed. See the file 'INSTALL' for help.))
+	fi
+    ],
+    [
+dnl By default, prefer GTK1 over GTK2, GLIB1 over GLIB2
+	AM_PATH_GLIB(1.2.6,
+	    [
+		CONFIG_DEFS="$CONFIG_DEFS -DHAVE_GLIB"
+	    ],
+	    [
+		AM_PATH_GLIB_2_0(2.2.0,
+		    [
+			CONFIG_DEFS="$CONFIG_DEFS -DHAVE_GLIB2"
+		    ],
+		    AC_MSG_ERROR(Test for GLIB2 failed. See the file 'INSTALL' for help.),
+		    gthread)
+	    ],
+	    gthread)
+	AM_PATH_GTK(1.2.6,
+	    [
+		CONFIG_DEFS="$CONFIG_DEFS -DHAVE_GTK"
+	    ],
+	    [
+	        AM_PATH_GTK_2_0(2.0.0,
+		    [
+			CONFIG_DEFS="$CONFIG_DEFS -DHAVE_GTK2"
+		    ],
+		    AC_MSG_ERROR(Test for GTK2 failed. See the file 'INSTALL' for help.))
+	    ])
+    ]
+)
+
+AC_ARG_ENABLE(float,
+    [  --enable-float          Do DSP processing in floats rather in int's],
+    [ CONFIG_DEFS="$CONFIG_DEFS -DFLOAT_DSP"]
+)
+
+AC_ARG_ENABLE(clip-everywhere,
+    [  --enable-clip-everywhere    Clip sound to min/max possible value in every effect (by default only on output)],
+    [ CONFIG_DEFS="$CONFIG_DEFS -DCLIP_EVERYWHERE"]
+)
+
+AC_ARG_ENABLE(debug,
+    [  --enable-debug          Add debug code (disabled by default)],
+    [
+	if test "$enableval" != "no"; then
+	    CONFIG_DEFS="$CONFIG_DEFS -DDEBUG -ggdb"
+	else
+	    CONFIG_DEFS="$CONFIG_DEFS -UDEBUG"
+	fi
+    ],
+    [
+	CONFIG_DEFS="$CONFIG_DEFS -UDEBUG"
+    ]
+)
+
+
+dnl Replace `main' with a function in -lm:
+AC_CHECK_LIB(m, main)
+dnl Replace `main' with a function in -lpthread:
+AC_CHECK_LIB(pthread, main)
+
+dnl Checks for header files.
+AC_HEADER_DIRENT
+AC_HEADER_STDC
+AC_CHECK_HEADERS(fcntl.h sys/ioctl.h sys/time.h unistd.h sys/stat.h)
+
+dnl Checks for typedefs, structures, and compiler characteristics.
+AC_C_CONST
+AC_TYPE_PID_T
+
+dnl Checks for library functions.
+AC_PROG_GCC_TRADITIONAL
+AC_CHECK_FUNCS(getcwd isascii memset pow sqrt)
+AC_FUNC_FORK
+AC_FUNC_MALLOC
+
+AC_SUBST(CONFIG_DEFS)
+
+AC_OUTPUT(src/Makefile Makefile)

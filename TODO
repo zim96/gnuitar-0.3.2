@@ -1,0 +1,123 @@
+TODO:
+0.2.0
++ fix delay and set rt priority to the thread
+  - research latency time on different kinds of drivers and
+    fragment sizes (for low-end computers)
++ в write/load процедурах делать не sizeof(тип), а sizeof(переменная)
++ disclaimer and copyright update in each source
++ LGPL notice everywhere
++ icon for the program
++ перед релизом марафет в исходниках - dos2unix, indent и вручную все проверить.
++ win32 - при нажатии на write track, а затем cancel, чекбокс остается
+  нажатым.
+- more docs
+  + HTML docs and a convert script to produce text versions
+    + docs/makefile
+  + launch browser to show documentation from the GNUitar
+    + win32
+    + check for browsers and getenv("BROWSER")
+    + UNIX - искать доку в /usr/share/doc, /usr/local/doc, /usr/local/share,
+      /usr/doc, в текущей дире и на уровень выше
+    + windows - искать доку в текущей и в ..\docs
+  + user documentation with effects description
+  + note on high priority thread and hangups
+  + legal issues
+  - order info
++ meaningful names for effects
+  + measure all in standard SI units (ms, etc.)
+    + reverb
++ problems with banks list - does not support national characters
++ demo version
++ good effects presets
++ fix tracker module (write to .WAV file)
++ problem with tremolo.c - memory bound error
++ lick up the project file
++ graceful app shutdown (function die)
+
+0.2.1
++ meaningful return codes
++ fix - multiply all time controls to the number of channels
+  and adjust time controls according to the sample rate
++ sample rate/fragments/stereo/bits controls on the fly
+  + sampling params dialog
+  + start/stop toggle button
+  + inner implementation: Linux
+    + обрабатывать значение latency
+    + правильно обрабатывать различные форматы данных
+      - 8/16 бит
+      + моно/стерео
+  + inner implementation: Windows
++ meaningful names for effects
+  + measure all in standard SI units (ms, etc.)
+    and care about array bounds (like in tremolo and vibrato)
+    + vibrato
+    + tremolo
+    + reverb
+    + distortion
+    + chorus
+    + delay
+    + echo
+    + wah
+    + sustain
+    + phasor
++ cleanup effects
+  + delay
+  + echo
+
+0.3.0
++ DirectSound API Win32
+  + fix buffer over/underruns (48000)
+  + fix latency autowah
+  + DirectSound control in sampling params dialog
+  + optimize loops in the audio thread
+
+0.3.1
++ noise gate
++ new overdrive effect
+
+0.3.2
++ GTK2
+  - test on Windows
++ equalizer effect
+  + 5kHz limit problem
++ process all in floats to decrease SNR ? Convert only on input and output ?
+  (as IFDEF)
++ distortion
++ correct build files for MSVC6.0
++ help contents on Windows 2000
++ sigfault on help contents with netscape, linux
+  (looks like it is a netscape own error)
++ review the docs, especially build notes for the console MSVC users
++ check autowah on windows
++ better presets for distort1 and phasor
++ autowah breaks the updated low and high values
+
+0.4.0
+- allow to read help only with sound off, or auto-stop the sound
+- tooltips to the noise gate window with important notes
+- remove mix control from autowah
+- pitch shifter
+- load preset files from the command line
+- group effects and give it meaningful names
+- new noise gate effect
+- i18n
+- effects with a sinusoidal phase/amplitude shape (tremolo,chorus)
+  offer other shapes (square, triangular)
+
+0.5.0
+- tuner
+?- external pedal and switch
+
+0.6.0
+- play .wav in the background
+
+Ongoing bugs (misc):
+- convert the names of presets to UTF8 strings, before append it
+  to the bank list, as recommended by GTK-Win32 manual.
+- bug with GTK critical error on finish
+
+Misc something:
+- port to wxWidgets ?
+- have a text boxes connected to the sliders, to directly edit the values
+- how to swap a slider controls, to make a bottom be on top and vice versa ?
+  So we move the slider up to increase the value, instead of moving it down...

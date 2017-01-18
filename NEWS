@@ -1,0 +1,52 @@
+5 May 2005, Version 0.3.2
+- some minor cleanups
+
+26 Apr 2005, Version 0.3.2-pre2
+- fixed the help contents bug on win2k
+- fixed the 100% cpu load bug with zeroes in the distort2 input
+- fixed autowah on windows
+
+18 Apr 2005, Version 0.3.2-pre1
+- re-worked distort2 effect; no need to download few Mbytes of lookup tables
+- equalizer effect
+- GTK 2 port
+- updated docs
+
+18 April 2003, Version 0.3.1
+- New distortion effect
+- Noise gate effect
+
+28 March 2003, Version 0.3.0
+- DirectSound playback on Windows DRAMATICALLY improves the latency
+- Tooltips added for most major controls.
+
+13 March 2003, Version 0.2.1
+- Change sampling params from the interface;
+- Meaningful measure units (%, ms) for every slider control;
+- New phasor option - turn on bandpass filter;
+- A lot of code cleanups;
+- Delay was fixed to reset memory on "Time" slider update;
+- Minor documentation updates.
+
+6 February 2003, Version 0.2.0
+- Windows port;
+- Write track to .wav file in Win32 version;
+- Meaningful measure units for vibrato and reverb effects (ms and percents);
+- HTML documentation; launch browser from a program to see the doc;
+- Tremolo bugfix: certain values of the effect params caused array bound
+  error and segfault;
+- Added icon ;-)
+- Major code cleanups for easier maintenance.
+
+25 March 2002, Version 0.1.0-beta 3
+- removed clip function from distortion - it sounds pretty bad;
+- Bank clist widget width auto-resizing;
+- effect control pop-ups cannot be closed from window manager;
+- updated doc.
+
+11 March 2002, Version 0.1.0-beta 2
+- bugfix with main window destroy code;
+- restrict to overwrite existing files by track_write() when in setuid root mode.
+
+11 January 2001, Version 0.1.0-beta 1
+- Initial release.
